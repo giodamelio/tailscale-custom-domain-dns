@@ -1,17 +1,19 @@
 package main
 
 import (
-	"log"
+	"os"
 	"strconv"
 
 	"github.com/miekg/dns"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func parseQuery(m *dns.Msg) {
 	for _, q := range m.Question {
 		switch q.Qtype {
 		case dns.TypeA:
-			log.Printf("Query for %s\n", q.Name)
+			log.Debug().Str("hostname", q.Name).Msgf("Query for %s", q.Name)
 			rr, err := dns.NewRR("test A 1.1.1.1")
 			if err == nil {
 				m.Answer = append(m.Answer, rr)
@@ -21,8 +23,6 @@ func parseQuery(m *dns.Msg) {
 }
 
 func handleDnsRequest(w dns.ResponseWriter, r *dns.Msg) {
-	log.Println("Handling Request")
-
 	m := new(dns.Msg)
 	m.SetReply(r)
 
@@ -35,14 +35,21 @@ func handleDnsRequest(w dns.ResponseWriter, r *dns.Msg) {
 }
 
 func main() {
-	dns.HandleFunc("home.gio.ninja.", handleDnsRequest)
+	// Setup logging
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
 
+	// Create the server
 	port := 5353
 	server := &dns.Server{Addr: ":" + strconv.Itoa(port), Net: "udp"}
-	log.Printf("Starting DNS server on port %d\n", port)
+
+	// Listen at our domain
+	dns.HandleFunc("home.gio.ninja.", handleDnsRequest)
+
+	// Start the server
+	log.Info().Int("port", port).Msgf("Starting DNS server on port %d", port)
 	err := server.ListenAndServe()
 	defer server.Shutdown()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Send()
 	}
 }
