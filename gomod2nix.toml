@@ -1,6 +1,9 @@
 schema = 3
 
 [mod]
+  [mod."github.com/golang/protobuf"]
+    version = "v1.5.2"
+    hash = "sha256-IVwooaIo46iq7euSSVWTBAdKd+2DUaJ67MtBao1DpBI="
   [mod."github.com/mattn/go-colorable"]
     version = "v0.1.12"
     hash = "sha256-Y1vCt0ShrCz4wSmwsppCfeLPLKrWusc2zM2lUFwDMyI="
@@ -17,11 +20,20 @@ schema = 3
     version = "v0.7.0"
     hash = "sha256-ur4ld/ZtS6fnjLpHje0i00buolCTxVDH/HBJPfTj1Yc="
   [mod."golang.org/x/net"]
-    version = "v0.2.0"
-    hash = "sha256-0MqnHDdLkkau6k7hlWD9MzIoAFROvxulyT+KzZkSXOs="
+    version = "v0.9.0"
+    hash = "sha256-EG5GRDq282twyce8uugsDTjMz1pNn6zPcyVTZmSiJ14="
+  [mod."golang.org/x/oauth2"]
+    version = "v0.7.0"
+    hash = "sha256-KQU6ZlzWMvBjBdCAdyZbdwXkyqIskKFWmJIM11m1shY="
   [mod."golang.org/x/sys"]
-    version = "v0.2.0"
-    hash = "sha256-N6yfQH7R2gfcvyWTQZbxWuSNyVy6hAxiab2WFzgAykI="
+    version = "v0.7.0"
+    hash = "sha256-GotRHJaas/q3L+tFam0q3oQ1rc8GDStt7wnz9h8MTEU="
   [mod."golang.org/x/tools"]
     version = "v0.3.0"
     hash = "sha256-8FjgJXwlRUyvByiPIo9fsLN4PRpny1Ax1ElkBImEq6U="
+  [mod."google.golang.org/appengine"]
+    version = "v1.6.7"
+    hash = "sha256-zIxGRHiq4QBvRqkrhMGMGCaVL4iM4TtlYpAi/hrivS4="
+  [mod."google.golang.org/protobuf"]
+    version = "v1.28.0"
+    hash = "sha256-p1cVM3OeEErh1WeNRAg4n3zYm/0qPTPmIiWNjRmJiMQ="
