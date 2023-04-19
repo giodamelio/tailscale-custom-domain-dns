@@ -2,63 +2,53 @@ package main
 
 import (
 	"os"
+	"time"
 
-	"github.com/miekg/dns"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 )
 
-func parseQuery(m *dns.Msg) {
-	for _, q := range m.Question {
-		switch q.Qtype {
-		case dns.TypeA:
-			log.Debug().Str("hostname", q.Name).Msgf("Query for %s", q.Name)
-			rr, err := dns.NewRR("test A 1.1.1.1")
-			if err == nil {
-				m.Answer = append(m.Answer, rr)
-			}
-		}
-	}
+type DeviceMap map[string]tsapi.Device
+
+type writeDevicesOp struct {
+	deviceMap DeviceMap
+	response  chan bool
 }
 
-func handleDnsRequest(w dns.ResponseWriter, r *dns.Msg) {
-	m := new(dns.Msg)
-	m.SetReply(r)
-
-	switch r.Opcode {
-	case dns.OpcodeQuery:
-		parseQuery(m)
-	}
-
-	w.WriteMsg(m)
+type readDevicesOp struct {
+	response chan DeviceMap
 }
 
 func main() {
 	// Setup logging
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
 
-	// Setup the tailscale api
-	tsapi := tsapi.NewTSClient("giodamelio.github")
-	devices, err := tsapi.Devices()
-	if err != nil {
-		log.Fatal().Err(err).Send()
-	}
-	log.Debug().Any("devices", devices).Msgf("There are %d devices", len(devices))
+	// Setup the tailscale api client
+	ts := tsapi.NewTSClient("giodamelio.github")
 
-	// Create the server
-	// port := 5353
-	// server := &dns.Server{Addr: ":" + strconv.Itoa(port), Net: "udp"}
-	//
-	// // Listen at our domain
-	// dns.HandleFunc("home.gio.ninja.", handleDnsRequest)
-	//
-	// // Start the server
-	// log.Info().Int("port", port).Msgf("Starting DNS server on port %d", port)
-	// err := server.ListenAndServe()
-	// defer server.Shutdown()
-	// if err != nil {
-	// 	log.Fatal().Err(err).Send()
-	// }
+	// Channels for reads and writes
+	reads := make(chan readDevicesOp)
+	writes := make(chan writeDevicesOp)
+
+	// Fetch the Devices on a regular basis
+	go setupDeviceFetcher(writes, ts, time.Second)
+
+	// Setup the DNS server
+	go setupDnsServer(reads, "home.gio.ninja.")
+
+	// Keep track of all the devices
+	var state = make(DeviceMap)
+	for {
+		select {
+		case read := <-reads:
+			log.Trace().Int("count", len(state)).Msg("Devices read")
+			read.response <- state
+		case write := <-writes:
+			log.Trace().Int("count", len(write.deviceMap)).Msg("Devices written")
+			state = write.deviceMap
+			write.response <- true
+		}
+	}
 }

@@ -28,6 +28,7 @@ type Device struct {
 	Addresses []string `json:"addresses"`
 	Hostname  string   `json:"hostname"`
 	Name      string   `json:"name"`
+	NodeId    string   `json:"nodeId"`
 }
 
 func NewTSClient(tailnetName string) *TSApi {
@@ -45,7 +46,9 @@ func NewTSClient(tailnetName string) *TSApi {
 
 func (ts *TSApi) Devices() ([]Device, error) {
 	// Make the request
-	resp, err := ts.httpClient.Get(buildPath("/tailnet", ts.tailnetName, "/devices"))
+	url := buildPath("/tailnet", ts.tailnetName, "/devices")
+	log.Trace().Str("url", url).Msg("Sending GET /devices")
+	resp, err := ts.httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("cannot get tailnet devices: %w", err)
 	}
@@ -58,6 +61,7 @@ func (ts *TSApi) Devices() ([]Device, error) {
 
 	// Parse the body to JSON
 	var deviceResponse getDevicesResponse
+	log.Trace().Int("bytes", len(body)).Msg("Parsing response")
 	err = json.Unmarshal(body, &deviceResponse)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse devices json: %w", err)

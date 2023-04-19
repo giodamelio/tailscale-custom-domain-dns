@@ -1,0 +1,58 @@
+package main
+
+import (
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
+)
+
+func fetchDevices(tsapi *tsapi.TSApi) ([]tsapi.Device, error) {
+	devices, err := tsapi.Devices()
+	if err != nil {
+		return nil, err
+	}
+	log.Debug().Msgf("Fetched %d devices from Tailscale", len(devices))
+	return devices, nil
+}
+
+// Get the device name by chopping off the last three subdomain parts
+// example computer.tsnet00000.ts.net -> compute
+func getDeviceName(rawDeviceName string) string {
+	domainParts := strings.Split(rawDeviceName, ".")
+	return strings.Join(domainParts[:len(domainParts)-3], ".")
+}
+
+// Fetch the devices on a regular basis
+func setupDeviceFetcher(
+	writeDevices chan writeDevicesOp,
+	ts *tsapi.TSApi,
+	duration time.Duration,
+) {
+	for {
+		devices, err := fetchDevices(ts)
+		if err != nil {
+			log.Warn().Err(err).Msg("Cannot fetch devices")
+		}
+
+		// Build a DeviceMap
+		var deviceMap = make(DeviceMap)
+		for _, device := range devices {
+			name := getDeviceName(device.Name)
+			deviceMap[name] = device
+		}
+
+		// Write the device map to the central store
+		write := writeDevicesOp{
+			deviceMap: deviceMap,
+			response:  make(chan bool),
+		}
+		writeDevices <- write
+		<-write.response
+
+		// Take a nap
+		time.Sleep(duration)
+	}
+}
