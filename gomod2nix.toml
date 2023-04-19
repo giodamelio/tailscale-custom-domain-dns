@@ -1,9 +1,18 @@
 schema = 3
 
 [mod]
+  [mod."github.com/mattn/go-colorable"]
+    version = "v0.1.12"
+    hash = "sha256-Y1vCt0ShrCz4wSmwsppCfeLPLKrWusc2zM2lUFwDMyI="
+  [mod."github.com/mattn/go-isatty"]
+    version = "v0.0.14"
+    hash = "sha256-e8zn5eCVh/B1HOP1PGXeXH0bGkIV0vKYP9KLwZni5as="
   [mod."github.com/miekg/dns"]
     version = "v1.1.53"
     hash = "sha256-qjYbgXOVzsePX/ksJw6rLO2XYMKLJ+29yf2bSteH6kc="
+  [mod."github.com/rs/zerolog"]
+    version = "v1.29.1"
+    hash = "sha256-UX+uiffB13Wdt1DGatxm0WiDWnI91w5Vxfhz4D7oLAw="
   [mod."golang.org/x/mod"]
     version = "v0.7.0"
     hash = "sha256-ur4ld/ZtS6fnjLpHje0i00buolCTxVDH/HBJPfTj1Yc="
