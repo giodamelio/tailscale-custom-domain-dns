@@ -45,9 +45,17 @@ func main() {
 
 	// Load/parse the config file
 	config := &Config{}
-	_, err = uconfig.Classic(&config, uconfig.Files{
+	c, err := uconfig.Classic(&config, uconfig.Files{
 		{configPath, toml.Unmarshal},
 	})
+
+	// Print usage if necessary
+	for _, arg := range os.Args {
+		if arg == "-h" || arg == "-help" || arg == "--help" || arg == "help" {
+			c.Usage()
+			os.Exit(0)
+		}
+	}
 
 	// Set the log level
 	level, err := zerolog.ParseLevel(config.LogLevel)
