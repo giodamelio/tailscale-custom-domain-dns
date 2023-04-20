@@ -7,6 +7,9 @@ schema = 3
   [mod."github.com/golang/protobuf"]
     version = "v1.5.2"
     hash = "sha256-IVwooaIo46iq7euSSVWTBAdKd+2DUaJ67MtBao1DpBI="
+  [mod."github.com/kkyr/fig"]
+    version = "v0.3.1"
+    hash = "sha256-6VY0okjbjlgtUIuBZg/xkSLSAS9auBp58wWATyi0ZD8="
   [mod."github.com/mattn/go-colorable"]
     version = "v0.1.12"
     hash = "sha256-Y1vCt0ShrCz4wSmwsppCfeLPLKrWusc2zM2lUFwDMyI="
@@ -16,6 +19,12 @@ schema = 3
   [mod."github.com/miekg/dns"]
     version = "v1.1.53"
     hash = "sha256-qjYbgXOVzsePX/ksJw6rLO2XYMKLJ+29yf2bSteH6kc="
+  [mod."github.com/mitchellh/mapstructure"]
+    version = "v1.4.1"
+    hash = "sha256-+xC5Th05FPFaWNMdAuX9YCwZpj0X1SD2t22a1VTkKNU="
+  [mod."github.com/pelletier/go-toml"]
+    version = "v1.9.3"
+    hash = "sha256-2bTSt1K6eDceRIIpNfv3HepMqoCrOIC7Ufnrj2x4yJg="
   [mod."github.com/rs/zerolog"]
     version = "v1.29.1"
     hash = "sha256-UX+uiffB13Wdt1DGatxm0WiDWnI91w5Vxfhz4D7oLAw="
@@ -40,3 +49,6 @@ schema = 3
   [mod."google.golang.org/protobuf"]
     version = "v1.28.0"
     hash = "sha256-p1cVM3OeEErh1WeNRAg4n3zYm/0qPTPmIiWNjRmJiMQ="
+  [mod."gopkg.in/yaml.v3"]
+    version = "v3.0.1"
+    hash = "sha256-FqL9TKYJ0XkNwJFnq9j0VvJ5ZUU1RvH/52h/f5bkYAU="
