@@ -3,6 +3,7 @@ module github.com/giodamelio/tailscale-custom-domain-dns
 go 1.17
 
 require (
+	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
