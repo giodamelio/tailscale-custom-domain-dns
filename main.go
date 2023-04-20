@@ -4,6 +4,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/adrg/xdg"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -24,6 +25,13 @@ type readDevicesOp struct {
 func main() {
 	// Setup logging
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
+
+	// Find the config files
+	configPath, err := xdg.SearchConfigFile("tailscale-custom-domain-dns.toml")
+	if err != nil {
+		log.Fatal().Err(err).Msg("could not find config file")
+	}
+	log.Warn().Str("path", configPath).Msg("Found config file")
 
 	// Setup the tailscale api client
 	ts := tsapi.NewTSClient("giodamelio.github")
