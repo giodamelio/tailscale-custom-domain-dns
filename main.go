@@ -33,7 +33,7 @@ func main() {
 	writes := make(chan writeDevicesOp)
 
 	// Fetch the Devices on a regular basis
-	go setupDeviceFetcher(writes, ts, time.Second)
+	go setupDeviceFetcher(writes, ts, time.Minute)
 
 	// Setup the DNS server
 	go setupDnsServer(reads, "home.gio.ninja.")
