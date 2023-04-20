@@ -1,5 +1,6 @@
 # Tailscale Custom Domain DNS
 
+[![Latest Release](https://flat.badgen.net/github/release/giodamelio/tailscale-custom-domain-dns)](https://github.com/giodamelio/tailscale-custom-domain-dns/releases/latest)
 [![Go Report Card](https://goreportcard.com/badge/github.com/giodamelio/tailscale-custom-domain-dns)](https://goreportcard.com/report/github.com/giodamelio/tailscale-custom-domain-dns)
 ![Dependabot Status](https://flat.badgen.net/github/dependabot/giodamelio/tailscale-custom-domain-dns)
 [![License](https://flat.badgen.net/github/license/giodamelio/tailscale-custom-domain-dns)](https://github.com/giodamelio/tailscale-custom-domain-dns/blob/master/LICENSE)
