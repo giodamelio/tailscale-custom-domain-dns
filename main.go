@@ -55,6 +55,9 @@ func main() {
 	c, err := uconfig.Classic(&config, uconfig.Files{
 		{configPath, toml.Unmarshal},
 	})
+	if err != nil {
+		log.Fatal().Err(err).Msg("could not parse config")
+	}
 
 	// Print usage if necessary
 	for _, arg := range os.Args {
