@@ -28,9 +28,16 @@ type DNSConfig struct {
 	Port int `default:"5353"`
 }
 
+type FetcherConfig struct {
+	Interval string `default:"1h"`
+}
+
 type Config struct {
-	LogLevel  string `default:"info"`
-	DNSServer DNSConfig
+	Domain      string `default:""`
+	TailnetName string `default:""`
+	LogLevel    string `default:"info"`
+	DNSServer   DNSConfig
+	Fetcher     FetcherConfig
 }
 
 func main() {
@@ -68,17 +75,21 @@ func main() {
 	log.Trace().Any("config", config).Msg("Loaded Config")
 
 	// Setup the tailscale api client
-	ts := tsapi.NewTSClient("giodamelio.github")
+	ts := tsapi.NewTSClient(config.TailnetName)
 
 	// Channels for reads and writes
 	reads := make(chan readDevicesOp)
 	writes := make(chan writeDevicesOp)
 
 	// Fetch the Devices on a regular basis
-	go setupDeviceFetcher(writes, ts, time.Minute)
+	duration, err := time.ParseDuration(config.Fetcher.Interval)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot parse config item fetchinterval")
+	}
+	go setupDeviceFetcher(writes, ts, duration)
 
 	// Setup the DNS server
-	go setupDnsServer(config, reads, "home.gio.ninja.")
+	go setupDnsServer(config, reads, config.Domain)
 
 	// Keep track of all the devices
 	var state = make(DeviceMap)
