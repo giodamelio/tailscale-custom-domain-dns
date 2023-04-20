@@ -121,16 +121,18 @@ func makeHandler(readDevices chan readDevicesOp, host string) DnsHandler {
 }
 
 // Run the DNS server
-func setupDnsServer(readDevices chan readDevicesOp, host string) {
+func setupDnsServer(config *Config, readDevices chan readDevicesOp, host string) {
 	// Create the server
-	port := 5353
-	server := &dns.Server{Addr: ":" + strconv.Itoa(port), Net: "udp"}
+	server := &dns.Server{Addr: ":" + strconv.Itoa(config.DNSServer.Port), Net: "udp"}
 
 	// Listen at our domain
 	dns.HandleFunc(host, makeHandler(readDevices, host))
 
 	// Start the server
-	log.Info().Int("port", port).Msgf("Starting DNS server on port %d", port)
+	log.
+		Info().
+		Int("port", config.DNSServer.Port).
+		Msgf("Starting DNS server on port %d", config.DNSServer.Port)
 	err := server.ListenAndServe()
 	defer server.Shutdown()
 	if err != nil {

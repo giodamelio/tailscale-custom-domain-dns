@@ -24,8 +24,13 @@ type readDevicesOp struct {
 	response chan DeviceMap
 }
 
+type DNSConfig struct {
+	Port int `default:"5353"`
+}
+
 type Config struct {
-	LogLevel string `default:"info"`
+	LogLevel  string `default:"info"`
+	DNSServer DNSConfig
 }
 
 func main() {
@@ -51,6 +56,9 @@ func main() {
 	}
 	zerolog.SetGlobalLevel(level)
 
+	// This has to be after the log level is set
+	log.Trace().Any("config", config).Msg("Loaded Config")
+
 	// Setup the tailscale api client
 	ts := tsapi.NewTSClient("giodamelio.github")
 
@@ -62,7 +70,7 @@ func main() {
 	go setupDeviceFetcher(writes, ts, time.Minute)
 
 	// Setup the DNS server
-	go setupDnsServer(reads, "home.gio.ninja.")
+	go setupDnsServer(config, reads, "home.gio.ninja.")
 
 	// Keep track of all the devices
 	var state = make(DeviceMap)
