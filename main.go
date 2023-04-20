@@ -4,7 +4,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/adrg/xdg"
+	"github.com/omeid/uconfig"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -22,6 +24,10 @@ type readDevicesOp struct {
 	response chan DeviceMap
 }
 
+type Config struct {
+	LogLevel string `default:"info"`
+}
+
 func main() {
 	// Setup logging
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
@@ -31,7 +37,19 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("could not find config file")
 	}
-	log.Warn().Str("path", configPath).Msg("Found config file")
+
+	// Load/parse the config file
+	config := &Config{}
+	_, err = uconfig.Classic(&config, uconfig.Files{
+		{configPath, toml.Unmarshal},
+	})
+
+	// Set the log level
+	level, err := zerolog.ParseLevel(config.LogLevel)
+	if err != nil {
+		log.Fatal().Err(err).Msg("invalid log level")
+	}
+	zerolog.SetGlobalLevel(level)
 
 	// Setup the tailscale api client
 	ts := tsapi.NewTSClient("giodamelio.github")
