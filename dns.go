@@ -139,12 +139,7 @@ func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan readDevicesOp, h
 }
 
 // Run the DNS server
-func setupDnsServer(config *Config, readDevices chan readDevicesOp, host string) {
-	// Setup the Tailscale server
-	tsServer := new(tsnet.Server)
-	tsServer.Hostname = "tailscale-custom-domain-dns"
-	defer tsServer.Close()
-
+func setupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan readDevicesOp, host string) {
 	// Create the Tailscale listener
 	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(config.DNSServer.Port))
 	if err != nil {

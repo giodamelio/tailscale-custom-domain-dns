@@ -9,6 +9,7 @@ import (
 	"github.com/omeid/uconfig"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"tailscale.com/tsnet"
 
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 )
@@ -77,6 +78,12 @@ func main() {
 	// This has to be after the log level is set
 	log.Trace().Any("config", config).Msg("Loaded Config")
 
+	// Startup tsnet
+	tsServer := new(tsnet.Server)
+	// TODO: allow this to be configured
+	tsServer.Hostname = "tailscale-custom-domain-dns"
+	defer tsServer.Close()
+
 	// Setup the tailscale api client
 	ts := tsapi.NewTSClient(config.TailnetName)
 
@@ -92,7 +99,7 @@ func main() {
 	go setupDeviceFetcher(writes, ts, duration)
 
 	// Setup the DNS server
-	go setupDnsServer(config, reads, config.Domain)
+	go setupDnsServer(config, tsServer, reads, config.Domain)
 
 	// Keep track of all the devices
 	var state = make(DeviceMap)
