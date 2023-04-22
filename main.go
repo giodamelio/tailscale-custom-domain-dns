@@ -82,6 +82,12 @@ func main() {
 	tsServer := new(tsnet.Server)
 	// TODO: allow this to be configured
 	tsServer.Hostname = "tailscale-custom-domain-dns"
+	tsServer.Logf = func(format string, args ...any) {
+		log.
+			Trace().
+			Str("library", "tsnet").
+			Msgf(format, args...)
+	}
 	defer tsServer.Close()
 
 	// Setup the tailscale api client
