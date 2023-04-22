@@ -2,44 +2,15 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/adrg/xdg"
 	"github.com/omeid/uconfig"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"tailscale.com/tsnet"
 
-	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
+	"github.com/giodamelio/tailscale-custom-domain-dns/server"
 )
-
-type DeviceMap map[string]tsapi.Device
-
-type writeDevicesOp struct {
-	deviceMap DeviceMap
-	response  chan bool
-}
-
-type readDevicesOp struct {
-	response chan DeviceMap
-}
-
-type DNSConfig struct {
-	Port int `default:"5353"`
-}
-
-type FetcherConfig struct {
-	Interval string `default:"1h"`
-}
-
-type Config struct {
-	Domain      string `default:""`
-	TailnetName string `default:""`
-	LogLevel    string `default:"info"`
-	DNSServer   DNSConfig
-	Fetcher     FetcherConfig
-}
 
 func main() {
 	// Setup logging
@@ -52,7 +23,7 @@ func main() {
 	}
 
 	// Load/parse the config file
-	config := &Config{}
+	config := &server.Config{}
 	c, err := uconfig.Classic(&config, uconfig.Files{
 		{configPath, toml.Unmarshal},
 	})
@@ -78,46 +49,5 @@ func main() {
 	// This has to be after the log level is set
 	log.Trace().Any("config", config).Msg("Loaded Config")
 
-	// Startup tsnet
-	tsServer := new(tsnet.Server)
-	// TODO: allow this to be configured
-	tsServer.Hostname = "tailscale-custom-domain-dns"
-	tsServer.Logf = func(format string, args ...any) {
-		log.
-			Trace().
-			Str("library", "tsnet").
-			Msgf(format, args...)
-	}
-	defer tsServer.Close()
-
-	// Setup the tailscale api client
-	ts := tsapi.NewTSClient(config.TailnetName)
-
-	// Channels for reads and writes
-	reads := make(chan readDevicesOp)
-	writes := make(chan writeDevicesOp)
-
-	// Fetch the Devices on a regular basis
-	duration, err := time.ParseDuration(config.Fetcher.Interval)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot parse config item fetchinterval")
-	}
-	go setupDeviceFetcher(writes, ts, duration)
-
-	// Setup the DNS server
-	go setupDnsServer(config, tsServer, reads, config.Domain)
-
-	// Keep track of all the devices
-	var state = make(DeviceMap)
-	for {
-		select {
-		case read := <-reads:
-			log.Trace().Int("count", len(state)).Msg("Devices read")
-			read.response <- state
-		case write := <-writes:
-			log.Trace().Int("count", len(write.deviceMap)).Msg("Devices written")
-			state = write.deviceMap
-			write.response <- true
-		}
-	}
+	server.Start(config)
 }

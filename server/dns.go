@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -70,7 +70,7 @@ func constructResponses(name string, device tsapi.Device, question dns.Question)
 
 type DnsHandler func(dns.ResponseWriter, *dns.Msg)
 
-func makeHandler(readDevices chan readDevicesOp, host string) DnsHandler {
+func makeHandler(readDevices chan ReadDevicesOp, host string) DnsHandler {
 	return func(w dns.ResponseWriter, r *dns.Msg) {
 		m := new(dns.Msg)
 		m.SetReply(r)
@@ -94,11 +94,11 @@ func makeHandler(readDevices chan readDevicesOp, host string) DnsHandler {
 		}
 
 		// Get the DeviceMap
-		read := readDevicesOp{
-			response: make(chan DeviceMap),
+		read := ReadDevicesOp{
+			Response: make(chan DeviceMap),
 		}
 		readDevices <- read
-		deviceMap := <-read.response
+		deviceMap := <-read.Response
 
 		// Respond to the question
 		question := m.Question[0]
@@ -122,7 +122,7 @@ func makeHandler(readDevices chan readDevicesOp, host string) DnsHandler {
 	}
 }
 
-func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan readDevicesOp, host string) {
+func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan ReadDevicesOp, host string) {
 	server := &dns.Server{
 		PacketConn: conn,
 		Net:        "udp",
@@ -139,7 +139,7 @@ func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan readDevicesOp, h
 }
 
 // Run the DNS server
-func setupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan readDevicesOp, host string) {
+func SetupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan ReadDevicesOp, host string) {
 	// Create the Tailscale listener
 	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(config.DNSServer.Port))
 	if err != nil {

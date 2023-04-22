@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"strings"
@@ -26,8 +26,8 @@ func getDeviceName(rawDeviceName string) string {
 }
 
 // Fetch the devices on a regular basis
-func setupDeviceFetcher(
-	writeDevices chan writeDevicesOp,
+func SetupDeviceFetcher(
+	writeDevices chan WriteDevicesOp,
 	ts *tsapi.TSApi,
 	duration time.Duration,
 ) {
@@ -45,12 +45,12 @@ func setupDeviceFetcher(
 		}
 
 		// Write the device map to the central store
-		write := writeDevicesOp{
-			deviceMap: deviceMap,
-			response:  make(chan bool),
+		write := WriteDevicesOp{
+			DeviceMap: deviceMap,
+			Response:  make(chan bool),
 		}
 		writeDevices <- write
-		<-write.response
+		<-write.Response
 
 		// Take a nap
 		time.Sleep(duration)
