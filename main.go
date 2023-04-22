@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"os"
 	"time"
 
@@ -90,18 +89,6 @@ func main() {
 			Msgf(format, args...)
 	}
 	defer tsServer.Close()
-
-	// Experiment
-	localClient, err := tsServer.LocalClient()
-	if err != nil {
-		log.Fatal().Err(err).Msg("could not get tsnet local client")
-	}
-
-	status, err := localClient.Status(context.Background())
-	peers := status.Peer
-	log.Info().Any("peers", peers).Send()
-
-	// End Experiment
 
 	// Setup the tailscale api client
 	ts := tsapi.NewTSClient(config.TailnetName)
