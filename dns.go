@@ -147,6 +147,11 @@ func setupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan rea
 	}
 
 	// Handle connections
+	log.
+		Debug().
+		Str("host", tsServer.Hostname).
+		Int("port", config.DNSServer.Port).
+		Msg("dns server listening on tailnet")
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
