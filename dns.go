@@ -9,6 +9,8 @@ import (
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 	"github.com/miekg/dns"
 	"github.com/rs/zerolog/log"
+	"tailscale.com/tsnet"
+	"tailscale.com/types/nettype"
 )
 
 func buildRR(name string, question dns.Question, address netip.Addr) dns.RR {
@@ -120,22 +122,41 @@ func makeHandler(readDevices chan readDevicesOp, host string) DnsHandler {
 	}
 }
 
-// Run the DNS server
-func setupDnsServer(config *Config, readDevices chan readDevicesOp, host string) {
-	// Create the server
-	server := &dns.Server{Addr: ":" + strconv.Itoa(config.DNSServer.Port), Net: "udp"}
+func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan readDevicesOp, host string) {
+	server := &dns.Server{
+		PacketConn: conn,
+		Net:        "udp",
+	}
+	defer server.Shutdown()
 
-	// Listen at our domain
+	// TODO we should probably make our own ServeMux here instead of using the default one
 	dns.HandleFunc(host, makeHandler(readDevices, host))
 
-	// Start the server
-	log.
-		Info().
-		Int("port", config.DNSServer.Port).
-		Msgf("Starting DNS server on port %d", config.DNSServer.Port)
-	err := server.ListenAndServe()
-	defer server.Shutdown()
+	err := server.ActivateAndServe()
 	if err != nil {
-		log.Fatal().Err(err).Send()
+		log.Fatal().Err(err).Msg("dns server error")
+	}
+}
+
+// Run the DNS server
+func setupDnsServer(config *Config, readDevices chan readDevicesOp, host string) {
+	// Setup the Tailscale server
+	tsServer := new(tsnet.Server)
+	tsServer.Hostname = "tailscale-custom-domain-dns"
+	defer tsServer.Close()
+
+	// Create the Tailscale listener
+	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(config.DNSServer.Port))
+	if err != nil {
+		log.Fatal().Err(err).Msg("could not listen on tailnet")
+	}
+
+	// Handle connections
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Error().Err(err).Msg("could not accept connection")
+		}
+		go serveDNSConn(conn.(nettype.ConnPacketConn), readDevices, host)
 	}
 }
