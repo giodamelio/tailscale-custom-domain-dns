@@ -153,9 +153,9 @@ func SetupDnsServer(tsServer *tsnet.Server, readDevices chan ReadDevicesOp, host
 		Str("host", tsServer.Hostname).
 		Int("port", viper.GetInt("dns-server.port")).
 		Msgf(
-			`DNS server listening port %d on with hostname "%s" on tailnet "%s"`,
-			viper.GetInt("dns-server.port"),
+			`DNS started. Host: %s, Port: %d, Tailnet: %s`,
 			viper.GetString("tailscale.hostname"),
+			viper.GetInt("dns-server.port"),
 			viper.GetString("tailscale.tailnet"),
 		)
 	for {
