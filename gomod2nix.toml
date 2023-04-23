@@ -4,9 +4,6 @@ schema = 3
   [mod."filippo.io/edwards25519"]
     version = "v1.0.0-rc.1"
     hash = "sha256-3DboBqby2ejRU33FG96Z8JF5AJ8HP2rC/v++VyoQ2LQ="
-  [mod."github.com/BurntSushi/toml"]
-    version = "v1.2.1"
-    hash = "sha256-Z1dlsUTjF8SJZCknYKt7ufJz8NPGg9P9+W17DQn+LO0="
   [mod."github.com/Microsoft/go-winio"]
     version = "v0.6.0"
     hash = "sha256-TQ0AvXZfuT3PDnb4p/h5zmyT8m9VPcwxlXMJuVD6ltE="
@@ -16,9 +13,6 @@ schema = 3
   [mod."github.com/akutz/memconn"]
     version = "v0.1.0"
     hash = "sha256-WOs/RQYjQbn41ui8ztHgWSd4jxydE+fvIrl/0dmHD9Y="
-  [mod."github.com/alecthomas/kong"]
-    version = "v0.7.1"
-    hash = "sha256-Wyg4T/TX2Le7SsbA3YFX1LVRsc8+7e8JPf1elBs/jdo="
   [mod."github.com/alexbrainman/sspi"]
     version = "v0.0.0-20210105120005-909beea2cc74"
     hash = "sha256-sMY9gSeRWqKE0JwY4HbUF1KO9eaL/hQ/A/uoyr0hrQI="
@@ -109,24 +103,12 @@ schema = 3
   [mod."github.com/klauspost/compress"]
     version = "v1.15.4"
     hash = "sha256-U6v9tYD16Tep9PuqRwCjrzXfj1IfV3KB54Qwnzko+xY="
-  [mod."github.com/knadh/koanf/maps"]
-    version = "v0.1.1"
-    hash = "sha256-tUjNmbUFArrbblgjAqqiqAd6jRS8lE6LY98x/9yTS6k="
-  [mod."github.com/knadh/koanf/parsers/json"]
-    version = "v0.1.0"
-    hash = "sha256-nQ3CuymcQIqJebIWsXfsZVVk4iL9ziWI3x0hSsYlziE="
-  [mod."github.com/knadh/koanf/parsers/toml"]
-    version = "v0.1.0"
-    hash = "sha256-KHusaSUdpFbL5Oc2vtErHVQSLxE3/8qpdGV8S0MHLXc="
-  [mod."github.com/knadh/koanf/providers/file"]
-    version = "v0.1.0"
-    hash = "sha256-lvCuvz/ffT/rV5nNtvoyz8wXlU69PWzGZO2H1kTrMV8="
-  [mod."github.com/knadh/koanf/v2"]
-    version = "v2.0.1"
-    hash = "sha256-zVQuSY9TjgdvwtTugDdLPqNKghAOiXcv/mZDRd9k2HU="
   [mod."github.com/kortschak/wol"]
     version = "v0.0.0-20200729010619-da482cc4850a"
     hash = "sha256-lnr9r/KNv4EeeNohFImC3Vd5E9nJ0N+4ZZ0VHFjwHps="
+  [mod."github.com/logrusorgru/aurora/v4"]
+    version = "v4.0.0"
+    hash = "sha256-PEH6+0YlK1zeqA7N4DDSkUk9BNBntphdUhwWqsElnCg="
   [mod."github.com/magiconair/properties"]
     version = "v1.8.7"
     hash = "sha256-XQ2bnc2s7/IH3WxEO4GishZurMyKwEclZy1DXg+2xXc="
@@ -151,24 +133,12 @@ schema = 3
   [mod."github.com/miekg/dns"]
     version = "v1.1.53"
     hash = "sha256-qjYbgXOVzsePX/ksJw6rLO2XYMKLJ+29yf2bSteH6kc="
-  [mod."github.com/mitchellh/copystructure"]
-    version = "v1.2.0"
-    hash = "sha256-VR9cPZvyW62IHXgmMw8ee+hBDThzd2vftgPksQYR/Mc="
   [mod."github.com/mitchellh/go-ps"]
     version = "v1.0.0"
     hash = "sha256-HzxVHNLHZpnsBuPcub0G+9jjDcDOsxM/6wifbsxf7EY="
   [mod."github.com/mitchellh/mapstructure"]
     version = "v1.5.0"
     hash = "sha256-ztVhGQXs67MF8UadVvG72G3ly0ypQW0IRDdOOkjYwoE="
-  [mod."github.com/mitchellh/reflectwalk"]
-    version = "v1.0.2"
-    hash = "sha256-VX9DPqChm7jPnyrA3RAYgxAFrAhj7TRKIWD/qR9Zr9s="
-  [mod."github.com/omeid/uconfig"]
-    version = "v1.2.0"
-    hash = "sha256-9QaQQBF97P0DhleKyC1Acgaqli4DOdjyp21vooM5l3Q="
-  [mod."github.com/pelletier/go-toml"]
-    version = "v1.9.5"
-    hash = "sha256-RJ9K1BTId0Mled7S66iGgxHkZ5JKEIsrrNaEfM8aImc="
   [mod."github.com/pelletier/go-toml/v2"]
     version = "v2.0.6"
     hash = "sha256-BxAeApnn5H+OLlH3TXGvIbtC6LmbRnjwbcfT1qMZ4PE="

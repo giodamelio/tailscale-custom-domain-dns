@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -12,7 +10,7 @@ import (
 
 func main() {
 	// Setup logging
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
+	log.Logger = log.Output(createFormatter())
 
 	// Setup the config
 	loadConfig()
@@ -23,6 +21,10 @@ func main() {
 		log.Fatal().Err(err).Msg("invalid log level")
 	}
 	zerolog.SetGlobalLevel(level)
+	// If we are at trace level, show more info then our custom logger
+	if level == zerolog.TraceLevel {
+		log.Logger = log.Output(createTraceFormatter())
+	}
 
 	// This has to be after the log level is set
 	log.Trace().Any("config", viper.AllSettings()).Msg("Loaded Config")
