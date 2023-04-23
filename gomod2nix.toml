@@ -16,6 +16,9 @@ schema = 3
   [mod."github.com/akutz/memconn"]
     version = "v0.1.0"
     hash = "sha256-WOs/RQYjQbn41ui8ztHgWSd4jxydE+fvIrl/0dmHD9Y="
+  [mod."github.com/alecthomas/kong"]
+    version = "v0.7.1"
+    hash = "sha256-Wyg4T/TX2Le7SsbA3YFX1LVRsc8+7e8JPf1elBs/jdo="
   [mod."github.com/alexbrainman/sspi"]
     version = "v0.0.0-20210105120005-909beea2cc74"
     hash = "sha256-sMY9gSeRWqKE0JwY4HbUF1KO9eaL/hQ/A/uoyr0hrQI="
