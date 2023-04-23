@@ -8,11 +8,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+var configName = "tailscale-custom-domain-dns.toml"
+
 func loadConfig() {
 	// Find the config file
-	configPath, err := xdg.SearchConfigFile("tailscale-custom-domain-dns.toml")
+	configPath, err := xdg.SearchConfigFile(configName)
 	if err != nil {
-		log.Fatal().Err(err).Msg("could not find config file")
+		log.Error().Msg("Could not find config file")
+		log.Error().Msgf(`No config file "%s" found in directories:`, configName)
+		log.Error().Msgf("  %s", xdg.ConfigHome)
+		for _, configDir := range xdg.ConfigDirs {
+			log.Error().Msgf("  %s", configDir)
+		}
+		log.Fatal().Err(err).Msg("Exiting")
 	}
 
 	// Setup viper

@@ -45,6 +45,12 @@ func createFormatter() zerolog.ConsoleWriter {
 		FormatFieldValue: func(i interface{}) string {
 			return ""
 		},
+		FormatErrFieldName: func(i interface{}) string {
+			return ""
+		},
+		FormatErrFieldValue: func(i interface{}) string {
+			return ""
+		},
 	}
 
 	return formatter
