@@ -10,22 +10,6 @@ import (
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 )
 
-type DNSConfig struct {
-	Port int `default:"5353"`
-}
-
-type FetcherConfig struct {
-	Interval string `default:"1h"`
-}
-
-type Config struct {
-	Domain      string `default:""`
-	TailnetName string `default:""`
-	LogLevel    string `default:"info"`
-	DNSServer   DNSConfig
-	Fetcher     FetcherConfig
-}
-
 type DeviceMap map[string]tsapi.Device
 
 type WriteDevicesOp struct {
