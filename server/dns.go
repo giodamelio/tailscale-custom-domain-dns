@@ -9,6 +9,7 @@ import (
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 	"github.com/miekg/dns"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"tailscale.com/tsnet"
 	"tailscale.com/types/nettype"
 )
@@ -139,9 +140,9 @@ func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan ReadDevicesOp, h
 }
 
 // Run the DNS server
-func SetupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan ReadDevicesOp, host string) {
+func SetupDnsServer(tsServer *tsnet.Server, readDevices chan ReadDevicesOp, host string) {
 	// Create the Tailscale listener
-	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(config.DNSServer.Port))
+	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(viper.GetInt("dns-server.port")))
 	if err != nil {
 		log.Fatal().Err(err).Msg("could not listen on tailnet")
 	}
@@ -150,7 +151,7 @@ func SetupDnsServer(config *Config, tsServer *tsnet.Server, readDevices chan Rea
 	log.
 		Debug().
 		Str("host", tsServer.Hostname).
-		Int("port", config.DNSServer.Port).
+		Int("port", viper.GetInt("dns-server.port")).
 		Msg("dns server listening on tailnet")
 	for {
 		conn, err := listener.Accept()

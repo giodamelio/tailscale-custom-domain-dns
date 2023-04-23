@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"tailscale.com/tsnet"
 
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
@@ -36,7 +37,7 @@ type ReadDevicesOp struct {
 	Response chan DeviceMap
 }
 
-func Start(config *Config) {
+func Start() {
 	// Startup tsnet
 	tsServer := new(tsnet.Server)
 	// TODO: allow this to be configured
@@ -50,20 +51,20 @@ func Start(config *Config) {
 	defer tsServer.Close()
 
 	// Setup the tailscale api client
-	ts := tsapi.NewTSClient(config.TailnetName)
+	ts := tsapi.NewTSClient(viper.GetString("tailnet-name"))
 	// Channels for reads and writes
 	reads := make(chan ReadDevicesOp)
 	writes := make(chan WriteDevicesOp)
 
 	// Fetch the Devices on a regular basis
-	duration, err := time.ParseDuration(config.Fetcher.Interval)
+	duration, err := time.ParseDuration(viper.GetString("fetcher.interval"))
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot parse config item fetchinterval")
 	}
 	go SetupDeviceFetcher(writes, ts, duration)
 
 	// Setup the DNS server
-	go SetupDnsServer(config, tsServer, reads, config.Domain)
+	go SetupDnsServer(tsServer, reads, viper.GetString("domain"))
 
 	// Keep track of all the devices
 	var state = make(DeviceMap)
