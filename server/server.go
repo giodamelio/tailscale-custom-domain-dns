@@ -24,8 +24,7 @@ type ReadDevicesOp struct {
 func Start() {
 	// Startup tsnet
 	tsServer := new(tsnet.Server)
-	// TODO: allow this to be configured
-	tsServer.Hostname = "tailscale-custom-domain-dns"
+	tsServer.Hostname = viper.GetString("tailscale.tailnet")
 	tsServer.Logf = func(format string, args ...any) {
 		log.
 			Trace().
@@ -35,7 +34,7 @@ func Start() {
 	defer tsServer.Close()
 
 	// Setup the tailscale api client
-	ts := tsapi.NewTSClient(viper.GetString("tailnet-name"))
+	ts := tsapi.NewTSClient(viper.GetString("tailscale.tailnet"))
 	// Channels for reads and writes
 	reads := make(chan ReadDevicesOp)
 	writes := make(chan WriteDevicesOp)

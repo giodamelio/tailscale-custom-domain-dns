@@ -31,6 +31,11 @@ func SetupDeviceFetcher(
 	ts *tsapi.TSApi,
 	duration time.Duration,
 ) {
+	log.
+		Info().
+		Dur("duration", duration).
+		Msgf("Fetching tailnet devices every %s", duration)
+
 	for {
 		devices, err := fetchDevices(ts)
 		if err != nil {
