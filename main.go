@@ -7,7 +7,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
-	"github.com/giodamelio/tailscale-custom-domain-dns/config"
 	"github.com/giodamelio/tailscale-custom-domain-dns/server"
 )
 
@@ -16,7 +15,7 @@ func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
 
 	// Setup the config
-	config.LoadConfig()
+	loadConfig()
 
 	// Set the log level
 	level, err := zerolog.ParseLevel(viper.GetString("log-level"))

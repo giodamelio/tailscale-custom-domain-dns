@@ -1,4 +1,4 @@
-package config
+package main
 
 import (
 	"os"
@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func LoadConfig() {
+func loadConfig() {
 	// Find the config file
 	configPath, err := xdg.SearchConfigFile("tailscale-custom-domain-dns.toml")
 	if err != nil {
