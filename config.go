@@ -20,6 +20,7 @@ func loadConfig() {
 		for _, configDir := range xdg.ConfigDirs {
 			log.Error().Msgf("  %s", configDir)
 		}
+		log.Error().Msg("You can generate config with `tailscale-custom-domain-dns --generate-config`")
 		log.Fatal().Err(err).Msg("Exiting")
 	}
 

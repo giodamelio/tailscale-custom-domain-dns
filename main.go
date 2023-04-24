@@ -14,7 +14,7 @@ import (
 func printHelp() {
 	log.Info().Msg("Small DNS server that serves records of your Tailnet as a subdomain of any domain")
 	log.Info().Msg("Instructions:")
-	log.Info().Msg("  Generate config with TODO")
+	log.Info().Msg("  Generate config with `tailscale-custom-domain-dns --generate-config`")
 	log.Info().Msg("  Fill in config")
 	log.Info().Msgf("  place %s somewhere in an XDG config directory", configName)
 	log.Info().Msg("  Keep this server running")
