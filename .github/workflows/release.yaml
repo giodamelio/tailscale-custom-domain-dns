@@ -52,5 +52,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.event.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
           build-args: RELEASE_TAG=${{ env.VERSION }}
