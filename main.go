@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -17,6 +18,28 @@ func printHelp() {
 	log.Info().Msg("  Fill in config")
 	log.Info().Msgf("  place %s somewhere in an XDG config directory", configName)
 	log.Info().Msg("  Keep this server running")
+}
+
+//go:embed examples/tailscale-custom-domain-dns.toml
+var exampleConfig []byte
+
+func generateConfig() {
+	configFile, err := os.OpenFile(configName, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
+	if err != nil {
+		if os.IsExist(err) {
+			log.Fatal().Err(err).Msg("Example configuration already exists")
+		}
+		log.Fatal().Err(err).Msg("could not open config file")
+	}
+	defer configFile.Close()
+
+	// Write the example config
+	_, err = configFile.Write(exampleConfig)
+	if err != nil {
+		log.Fatal().Err(err).Msg("could not write to config file")
+	}
+
+	log.Info().Msgf(`Wrote example config to "./%s"`, configName)
 }
 
 func argsContain(flags []string) bool {
@@ -37,6 +60,11 @@ func main() {
 	// Print help if necessary
 	if argsContain([]string{"-h", "-help", "--help", "help"}) {
 		printHelp()
+		os.Exit(0)
+	}
+
+	if argsContain([]string{"-generate-config", "--generate-config"}) {
+		generateConfig()
 		os.Exit(0)
 	}
 

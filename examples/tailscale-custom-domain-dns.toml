@@ -1,0 +1,32 @@
+# Example config
+# This config contains every available option with their defaults set
+# Empty strings are options with no defaults that MUST be set
+
+# Set the log level, can be one of:
+# "trace", "debug", "info", "warn", "error", "fatal", and "panic"
+log-level = "debug"
+
+# The fully qualified domain you want to server subdomain records for
+# Notice the . on the end
+# Example: "home.lan." would serve a response for "<machine name>.home.lan"
+domain = ""
+
+[tailscale]
+# The name of your Tailnet
+# Instructions on how to find: TODO: unconfuse tailnet vs organization
+# https://tailscale.com/kb/1217/tailnet-name/#organization-name
+# Example: "<username>.github"
+tailnet = "giodamelio.github"
+
+# The hostname that the server will connect to you tailnet with
+hostname = "tailscale-custom-domain-dns"
+
+[dns-server]
+# The port the dns server will be run at
+# The port is opened directly on your tailnet using the tsnet library,
+# so you do not need root privilidges to run on port 53
+port = 53
+
+[fetcher]
+# How often the server will fetch the list of devices from your organization
+interval = "1h"
