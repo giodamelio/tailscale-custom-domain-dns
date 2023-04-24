@@ -12,11 +12,15 @@ log-level = "debug"
 domain = ""
 
 [tailscale]
-# The name of your Tailnet
-# Instructions on how to find: TODO: unconfuse tailnet vs organization
+# The name of your Tailscale organization name
+# This is needed to get a list of all devices in your tailnet
+# See: https://github.com/tailscale/tailscale/blob/main/api.md#list-tailnet-devices
+#
+# Instructions on how to find your organization name:
 # https://tailscale.com/kb/1217/tailnet-name/#organization-name
+#
 # Example: "<username>.github"
-tailnet = "giodamelio.github"
+organization-name = ""
 
 # The hostname that the server will connect to you tailnet with
 hostname = "tailscale-custom-domain-dns"

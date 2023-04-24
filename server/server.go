@@ -24,7 +24,7 @@ type ReadDevicesOp struct {
 func Start() {
 	// Startup tsnet
 	tsServer := new(tsnet.Server)
-	tsServer.Hostname = viper.GetString("tailscale.tailnet")
+	tsServer.Hostname = viper.GetString("tailscale.hostname")
 	tsServer.Logf = func(format string, args ...any) {
 		log.
 			Trace().
@@ -34,7 +34,7 @@ func Start() {
 	defer tsServer.Close()
 
 	// Setup the tailscale api client
-	ts := tsapi.NewTSClient(viper.GetString("tailscale.tailnet"))
+	ts := tsapi.NewTSClient(viper.GetString("tailscale.organization-name"))
 	// Channels for reads and writes
 	reads := make(chan ReadDevicesOp)
 	writes := make(chan WriteDevicesOp)
