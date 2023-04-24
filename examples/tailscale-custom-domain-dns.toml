@@ -1,19 +1,20 @@
-# Example config
-# This config contains every available option with their defaults set
-# Empty strings are options with no defaults that MUST be set
+# Example config file
+# This config file includes all available options with default settings.
+# Empty strings represent options with no default settings that must be 
+# specified.
 
-# Set the log level, can be one of:
-# "trace", "debug", "info", "warn", "error", "fatal", and "panic"
+# Set the level of logging. Possible values are: 
+# "trace", "debug", "info", "warn", "error", "fatal", and "panic".
 log-level = "debug"
 
-# The fully qualified domain you want to server subdomain records for
-# Notice the . on the end
-# Example: "home.lan." would serve a response for "<machine name>.home.lan"
+# The fully qualified domain that you want to serve subdomain records for.
+# Note the "." at the end.
+# Example: "home.lan." would provide a response for "<machine name>.home.lan"
 domain = ""
 
 [tailscale]
-# The name of your Tailscale organization name
-# This is needed to get a list of all devices in your tailnet
+# The name of your Tailscale organization. This is necessary to get a list of 
+# all devices in your tailnet.
 # See: https://github.com/tailscale/tailscale/blob/main/api.md#list-tailnet-devices
 #
 # Instructions on how to find your organization name:
@@ -22,15 +23,15 @@ domain = ""
 # Example: "<username>.github"
 organization-name = ""
 
-# The hostname that the server will connect to you tailnet with
+# The hostname that the server will connect to your tailnet with.
 hostname = "tailscale-custom-domain-dns"
 
 [dns-server]
-# The port the dns server will be run at
-# The port is opened directly on your tailnet using the tsnet library,
-# so you do not need root privilidges to run on port 53
+# The port that the DNS server will run on.
+# The port is opened directly on your tailnet using the tsnet library, so you 
+# do not need root privileges to run on port 53.
 port = 53
 
 [fetcher]
-# How often the server will fetch the list of devices from your organization
+# How frequently the server will fetch the list of devices from your organization.
 interval = "1h"
