@@ -7,9 +7,9 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
@@ -33,8 +33,8 @@ type Device struct {
 
 func NewTSClient(tailnetName string) *TSApi {
 	var oauthConfig = &clientcredentials.Config{
-		ClientID:     os.Getenv("TS_OAUTH_CLIENT_ID"),
-		ClientSecret: os.Getenv("TS_OAUTH_CLIENT_SECRET"),
+		ClientID:     viper.GetString("tailscale.oauth-client-id"),
+		ClientSecret: viper.GetString("tailscale.oauth-client-secret"),
 		TokenURL:     buildPath("/oauth/token"),
 	}
 

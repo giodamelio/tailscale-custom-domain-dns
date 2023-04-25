@@ -23,6 +23,18 @@ domain = ""
 # Example: "<username>.github"
 organization-name = ""
 
+# Tailscale auth key. Allows the server to join your tailnet
+# WARNING: this is a secret value, consider setting it via an environment variable instead ofsaving it in a potentially insecure config file.
+# Example: "tskey-abcdef1432341818"
+auth-key = ""
+
+# Tailscale OAuth client id and secret
+# These are used to call the Tailscale API and get the list of devices on your tailnet and their IP addresses.
+# WARNING: these are secret values, consider setting it via an environment variable instead ofsaving it in a potentially insecure config file.
+# Example: id = "gC4s54HItEeu", secret = "tskey-client-gC4s54HItEeu-AAAAAAAAAAAAAAAAAAAAA"
+oauth-client-id = ""
+oauth-client-secret = ""
+
 # The hostname that the server will connect to your tailnet with.
 hostname = "tailscale-custom-domain-dns"
 

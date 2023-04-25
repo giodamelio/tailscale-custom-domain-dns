@@ -51,7 +51,13 @@ func loadConfig() {
 	}
 
 	// Check for required config options
-	requiredConfigs := []string{"domain", "tailscale.organization-name"}
+	requiredConfigs := []string{
+		"domain",
+		"tailscale.organization-name",
+		"tailscale.auth-key",
+		"tailscale.oauth-client-id",
+		"tailscale.oauth-client-secret",
+	}
 	var missingConfigs []string
 	for _, requiredConfigName := range requiredConfigs {
 		if !viper.IsSet(requiredConfigName) {
