@@ -14,7 +14,7 @@ import (
 	"tailscale.com/types/nettype"
 )
 
-func buildRR(name string, question dns.Question, address netip.Addr) dns.RR {
+func buildRR(name string, question dns.Question, address netip.Addr, host string) dns.RR {
 	log.
 		Trace().
 		Str("name", name).
@@ -28,11 +28,11 @@ func buildRR(name string, question dns.Question, address netip.Addr) dns.RR {
 	var err error
 
 	if (question.Qtype == dns.TypeA || question.Qtype == dns.TypeANY) && address.Is4() {
-		rr, err = dns.NewRR(fmt.Sprintf("%s A %s", name, address.String()))
+		rr, err = dns.NewRR(fmt.Sprintf("%s.%s A %s", name, host, address.String()))
 	}
 
 	if (question.Qtype == dns.TypeAAAA || question.Qtype == dns.TypeANY) && address.Is6() {
-		rr, err = dns.NewRR(fmt.Sprintf("%s AAAA %s", name, address.String()))
+		rr, err = dns.NewRR(fmt.Sprintf("%s.%s AAAA %s", name, host, address.String()))
 	}
 
 	if err != nil {
@@ -47,7 +47,7 @@ func buildRR(name string, question dns.Question, address netip.Addr) dns.RR {
 	return rr
 }
 
-func constructResponses(name string, device tsapi.Device, question dns.Question) []dns.RR {
+func constructResponses(name string, device tsapi.Device, question dns.Question, host string) []dns.RR {
 	var result []dns.RR
 
 	for _, rawAddress := range device.Addresses {
@@ -61,7 +61,7 @@ func constructResponses(name string, device tsapi.Device, question dns.Question)
 			continue
 		}
 
-		if rr := buildRR(name, question, address); rr != nil {
+		if rr := buildRR(name, question, address, host); rr != nil {
 			result = append(result, rr)
 		}
 	}
@@ -114,7 +114,7 @@ func makeHandler(readDevices chan ReadDevicesOp, host string) DnsHandler {
 
 		// Respond if a device with the hostname exists
 		if device, ok := deviceMap[name]; ok {
-			rrs := constructResponses(name, device, question)
+			rrs := constructResponses(name, device, question, host)
 			log.Trace().Any("records", rrs).Msg("Sending records to client")
 			m.Answer = rrs
 		}
