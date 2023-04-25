@@ -13,3 +13,20 @@ A tiny DNS server that fetches your list of Tailscale machines and serves record
 I love using [Tailscale](https://tailscale.com/) for all my devices, but I am paranoid about configuring my services to use the `*.ts.net` domain given to me by Tailscale in case I ever need to migrate away from Tailscale.
 
 This small DNS server reads the list of all your Tailscale devices and returns `A` and `AAAA` records as subdomains on an arbitrary domain you specify.
+
+# Configuration
+
+For docs on all the config optons, see the [example config file](examples/tailscale-custom-domain-dns.toml)
+
+## Environment variables
+
+The config file can be overridden with environment variables. They all have the prefix `TSDNS`. Nested options are seperated by underscores and dashes are removed. For example:
+
+```
+[dns-server]
+port = 2222
+
+# becomes
+
+$ export TSDNS_DNSSERVER_PORT=2222
+```

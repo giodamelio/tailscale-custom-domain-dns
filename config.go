@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strings"
 
 	"github.com/adrg/xdg"
 	"github.com/rs/zerolog/log"
@@ -27,6 +28,11 @@ func loadConfig() {
 	// Setup viper
 	viper.SetConfigName("tailscale-custom-domain-dns")
 	viper.SetConfigType("toml")
+
+	// Read configs from environment variables
+	viper.SetEnvPrefix("TSDNS")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", ""))
+	viper.AutomaticEnv()
 
 	// Set some default values
 	viper.SetDefault("log-level", "info")
