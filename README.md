@@ -14,6 +14,13 @@ I love using [Tailscale](https://tailscale.com/) for all my devices, but I am pa
 
 This small DNS server reads the list of all your Tailscale devices and returns `A` and `AAAA` records as subdomains on an arbitrary domain you specify.
 
+# Install
+
+ - Download the [latest release](https://github.com/giodamelio/tailscale-custom-domain-dns/releases) from Github
+ - Install via Docker from GHCR: `$ docker pull ghcr.io/giodamelio/tailscale-custom-domain-dns:0.1.0`
+ - Install with Golang cli: `go install github.com/giodamelio/tailscale-custom-domain-dns`
+ - Clone and build from repo: `git clone https://github.com/giodamelio/tailscale-custom-domain-dns.git`
+
 # Configuration
 
 For docs on all the config optons, see the [example config file](examples/tailscale-custom-domain-dns.toml)
