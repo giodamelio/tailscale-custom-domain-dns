@@ -26,6 +26,9 @@ func Start() {
 	tsServer := new(tsnet.Server)
 	tsServer.Hostname = viper.GetString("tailscale.hostname")
 	tsServer.AuthKey = viper.GetString("tailscale.auth-key")
+	if viper.IsSet("tailscale.state-directory") {
+		tsServer.Dir = viper.GetString("tailscale.state-directory")
+	}
 	tsServer.Logf = func(format string, args ...any) {
 		log.
 			Trace().

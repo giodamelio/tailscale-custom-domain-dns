@@ -38,6 +38,11 @@ oauth-client-secret = ""
 # The hostname that the server will connect to your tailnet with.
 hostname = "tailscale-custom-domain-dns"
 
+# The directory that the Tailscale state is stored in
+# If it is not set, tsnet will choose a path in the users config directory
+# Example: state-dir = "/data"
+state-dir = ""
+
 [dns-server]
 # The port that the DNS server will run on.
 # The port is opened directly on your tailnet using the tsnet library, so you 
