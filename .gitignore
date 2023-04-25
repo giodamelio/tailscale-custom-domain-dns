@@ -2,3 +2,4 @@
 result
 .env
 dist/
+tmp/
