@@ -37,3 +37,11 @@ port = 2222
 
 $ export TSDNS_DNSSERVER_PORT=2222
 ```
+
+# Possible Future Enhancements
+
+ - Webhook endpoint allowing automatic refreshing of devices when a new device is added
+ - LetsEncrypt DNS-01 Challenge integration
+ - Config based static records/aliases
+ - Simple web ui listing status
+ - Status url for Prometheus or monitoring
