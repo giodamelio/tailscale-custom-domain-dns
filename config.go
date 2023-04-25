@@ -49,4 +49,16 @@ func loadConfig() {
 	if err != nil {
 		log.Fatal().Err(err).Str("path", configPath).Msg("could not parse conf file")
 	}
+
+	// Check for required config options
+	requiredConfigs := []string{"domain", "tailscale.organization-name"}
+	var missingConfigs []string
+	for _, requiredConfigName := range requiredConfigs {
+		if !viper.IsSet(requiredConfigName) {
+			missingConfigs = append(missingConfigs, requiredConfigName)
+		}
+	}
+	if len(missingConfigs) != 0 {
+		log.Fatal().Msgf("Missing required config values:\n - %s\n", strings.Join(missingConfigs, "\n - "))
+	}
 }
