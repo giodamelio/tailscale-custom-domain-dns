@@ -39,6 +39,7 @@ func loadConfig() {
 	viper.SetDefault("fetcher.interval", "1h")
 	viper.SetDefault("dns-server.port", 53)
 	viper.SetDefault("tailscale.hostname", "tailscale-custom-domain-dns")
+	viper.SetDefault("tailscale.ephemeral", false)
 
 	// Read the config
 	configFile, err := os.Open(configPath)

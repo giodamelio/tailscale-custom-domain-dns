@@ -43,6 +43,9 @@ hostname = "tailscale-custom-domain-dns"
 # Example: state-dir = "/data"
 state-dir = ""
 
+# Mark the node as Ephemeral
+ephemeral = false
+
 [dns-server]
 # The port that the DNS server will run on.
 # The port is opened directly on your tailnet using the tsnet library, so you 

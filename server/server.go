@@ -26,6 +26,7 @@ func Start() {
 	tsServer := new(tsnet.Server)
 	tsServer.Hostname = viper.GetString("tailscale.hostname")
 	tsServer.AuthKey = viper.GetString("tailscale.auth-key")
+	tsServer.Ephemeral = viper.GetBool("tailscale.ephemeral")
 	if viper.IsSet("tailscale.state-directory") {
 		tsServer.Dir = viper.GetString("tailscale.state-directory")
 	}
