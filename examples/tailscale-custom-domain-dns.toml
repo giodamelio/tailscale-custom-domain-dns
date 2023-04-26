@@ -60,3 +60,7 @@ interval = "1h"
 # Alias for the root domain without any subdomain
 # Example: root = "machine-one"
 root = ""
+
+[aliases.subdomains]
+# Aliases for subdomains, they take the form of:
+# alias = "existing-device-name"

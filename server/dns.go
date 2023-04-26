@@ -120,10 +120,12 @@ func makeHandler(readDevices chan ReadDevicesOp, host string) DnsHandler {
 		// Get just the subdomain name from the request
 		name := strings.ReplaceAll(question.Name, "."+host, "")
 
+		// Get possible aliases
+		aliases := viper.GetStringMapString("aliases.subdomains")
+
 		var rrs []dns.RR
 		if question.Name == host {
 			// If the hostname is bare, check for a root alias
-
 			if viper.IsSet("aliases.root") {
 				name := viper.GetString("aliases.root")
 				if device, ok := deviceMap[name]; ok {
@@ -136,7 +138,22 @@ func makeHandler(readDevices chan ReadDevicesOp, host string) DnsHandler {
 					m.Answer = rrs
 				}
 			}
+		} else if alias, ok := aliases[name]; ok {
+			// Respond with an alias
+			if device, ok := deviceMap[alias]; ok {
+				log.
+					Debug().
+					Str("host", name).
+					Msgf(`Serving alias "%s" redirects to "%s"`, question.Name, alias)
+
+				rrs = constructResponses(name, device, question, host)
+				m.Answer = rrs
+			}
 		} else if device, ok := deviceMap[name]; ok {
+			log.
+				Debug().
+				Msgf(`Serving normal response "%s"`, question.Name)
+
 			// Respond if a device with the hostname exists
 			rrs = constructResponses(name, device, question, host)
 		}

@@ -40,6 +40,7 @@ func loadConfig() {
 	viper.SetDefault("dns-server.port", 53)
 	viper.SetDefault("tailscale.hostname", "tailscale-custom-domain-dns")
 	viper.SetDefault("tailscale.ephemeral", false)
+	viper.SetDefault("aliases.subdomains", map[string]string{})
 
 	// Read the config
 	configFile, err := os.Open(configPath)

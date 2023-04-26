@@ -42,6 +42,6 @@ $ export TSDNS_DNSSERVER_PORT=2222
 
  - Webhook endpoint allowing automatic refreshing of devices when a new device is added
  - LetsEncrypt DNS-01 Challenge integration
- - Config based static records/aliases
+ - ~Config based static records/aliases~
  - Simple web ui listing status
  - Status url for Prometheus or monitoring
