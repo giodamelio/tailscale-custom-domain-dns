@@ -51,7 +51,12 @@ func Start() {
 
 	if viper.GetBool("http-server.enabled") {
 		// Setup the http server
-		go SetupHttpServer(tsServer, reads)
+		go SetupHttpServer(
+			tsServer,
+			ts,
+			reads,
+			writes,
+		)
 	}
 
 	// Keep track of all the devices
