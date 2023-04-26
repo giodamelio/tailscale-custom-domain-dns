@@ -49,6 +49,11 @@ func Start() {
 	// Setup the DNS server
 	go SetupDnsServer(tsServer, reads)
 
+	if viper.GetBool("http-server.enabled") {
+		// Setup the http server
+		go SetupHttpServer(tsServer, reads)
+	}
+
 	// Keep track of all the devices
 	var state = make(DeviceMap)
 	for {
