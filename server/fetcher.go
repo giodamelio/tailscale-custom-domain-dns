@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 
 	"github.com/giodamelio/tailscale-custom-domain-dns/tsapi"
 )
@@ -29,8 +30,12 @@ func getDeviceName(rawDeviceName string) string {
 func SetupDeviceFetcher(
 	writeDevices chan WriteDevicesOp,
 	ts *tsapi.TSApi,
-	duration time.Duration,
 ) {
+	duration, err := time.ParseDuration(viper.GetString("fetcher.interval"))
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot parse config item fetchinterval")
+	}
+
 	log.
 		Info().
 		Dur("duration", duration).

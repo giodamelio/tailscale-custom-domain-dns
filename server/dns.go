@@ -184,12 +184,13 @@ func serveDNSConn(conn nettype.ConnPacketConn, readDevices chan ReadDevicesOp, h
 }
 
 // Run the DNS server
-func SetupDnsServer(tsServer *tsnet.Server, readDevices chan ReadDevicesOp, host string) {
+func SetupDnsServer(tsServer *tsnet.Server, readDevices chan ReadDevicesOp) {
 	// Create the Tailscale listener
 	listener, err := tsServer.Listen("udp", ":"+strconv.Itoa(viper.GetInt("dns-server.port")))
 	if err != nil {
 		log.Fatal().Err(err).Msg("could not listen on tailnet")
 	}
+	host := viper.GetString("domain")
 
 	// Handle connections
 	log.
