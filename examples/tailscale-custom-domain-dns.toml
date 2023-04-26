@@ -55,3 +55,8 @@ port = 53
 [fetcher]
 # How frequently the server will fetch the list of devices from your organization.
 interval = "1h"
+
+[aliases]
+# Alias for the root domain without any subdomain
+# Example: root = "machine-one"
+root = ""
