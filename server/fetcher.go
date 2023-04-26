@@ -26,6 +26,28 @@ func getDeviceName(rawDeviceName string) string {
 	return strings.Join(domainParts[:len(domainParts)-3], ".")
 }
 
+func updateDevices(writeDevices chan WriteDevicesOp, ts *tsapi.TSApi) {
+	devices, err := fetchDevices(ts)
+	if err != nil {
+		log.Warn().Err(err).Msg("Cannot fetch devices")
+	}
+
+	// Build a DeviceMap
+	var deviceMap = make(DeviceMap)
+	for _, device := range devices {
+		name := getDeviceName(device.Name)
+		deviceMap[name] = device
+	}
+
+	// Write the device map to the central store
+	write := WriteDevicesOp{
+		DeviceMap: deviceMap,
+		Response:  make(chan bool),
+	}
+	writeDevices <- write
+	<-write.Response
+}
+
 // Fetch the devices on a regular basis
 func SetupDeviceFetcher(
 	writeDevices chan WriteDevicesOp,
@@ -42,25 +64,7 @@ func SetupDeviceFetcher(
 		Msgf("Fetching tailnet devices every %s", duration)
 
 	for {
-		devices, err := fetchDevices(ts)
-		if err != nil {
-			log.Warn().Err(err).Msg("Cannot fetch devices")
-		}
-
-		// Build a DeviceMap
-		var deviceMap = make(DeviceMap)
-		for _, device := range devices {
-			name := getDeviceName(device.Name)
-			deviceMap[name] = device
-		}
-
-		// Write the device map to the central store
-		write := WriteDevicesOp{
-			DeviceMap: deviceMap,
-			Response:  make(chan bool),
-		}
-		writeDevices <- write
-		<-write.Response
+		updateDevices(writeDevices, ts)
 
 		// Take a nap
 		time.Sleep(duration)
