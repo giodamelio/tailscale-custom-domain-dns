@@ -9,7 +9,7 @@ require (
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/viper v1.15.0
 	golang.org/x/oauth2 v0.7.0
-	tailscale.com v1.40.0
+	tailscale.com v1.40.1
 )
 
 require (
