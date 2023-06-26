@@ -5,11 +5,11 @@ go 1.20
 require (
 	github.com/adrg/xdg v0.4.0
 	github.com/logrusorgru/aurora/v4 v4.0.0
-	github.com/miekg/dns v1.1.54
+	github.com/miekg/dns v1.1.55
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/viper v1.16.0
 	golang.org/x/oauth2 v0.9.0
-	tailscale.com v1.42.0
+	tailscale.com v1.44.0
 )
 
 require (
@@ -86,7 +86,7 @@ require (
 	golang.org/x/term v0.9.0 // indirect
 	golang.org/x/text v0.10.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
-	golang.org/x/tools v0.8.0 // indirect
+	golang.org/x/tools v0.9.1 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
