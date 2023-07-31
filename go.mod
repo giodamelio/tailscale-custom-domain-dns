@@ -6,7 +6,7 @@ require (
 	github.com/adrg/xdg v0.4.0
 	github.com/logrusorgru/aurora/v4 v4.0.0
 	github.com/miekg/dns v1.1.54
-	github.com/rs/zerolog v1.29.1
+	github.com/rs/zerolog v1.30.0
 	github.com/spf13/viper v1.16.0
 	golang.org/x/oauth2 v0.9.0
 	tailscale.com v1.42.0
