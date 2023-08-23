@@ -1,23 +1,31 @@
 {
-  description = "A basic gomod2nix flake";
+  description = "Tailscale DNS server";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.gomod2nix.url = "github:nix-community/gomod2nix";
+  inputs.flake-parts.url = "github:hercules-ci/flake-parts";
 
-  outputs = { self, nixpkgs, flake-utils, gomod2nix }:
-    (flake-utils.lib.eachDefaultSystem
-      (system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = [ gomod2nix.overlays.default ];
-          };
+  outputs = inputs @ { self, flake-parts, ... }: flake-parts.lib.mkFlake {inherit inputs;} {
+    systems = ["x86_64-linux" "aarch64-linux"];
 
-        in
-        {
-          packages.default = pkgs.callPackage ./. { };
-          devShells.default = import ./shell.nix { inherit pkgs; };
-        })
-    );
+    perSystem = {
+        pkgs,
+        inputs',
+        config,
+        self',
+        system,
+        ...
+      }: {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            go_1_21
+          ];
+        };
+        packages.default = pkgs.buildGoModule {
+          pname = "tailscale-custom-domain-dns";
+          version = "0.6.2";
+          src = ./.;
+          vendorHash = "sha256-dNTf27ef7INXjB9hkJ651aVzAY/3Ek4QjkTWWDMngrA=";
+        };
+      };
+  };
 }
