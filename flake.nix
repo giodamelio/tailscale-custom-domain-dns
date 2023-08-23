@@ -24,9 +24,9 @@
         };
         packages.default = inputs'.nixpkgs-master.legacyPackages.buildGo121Module {
           pname = "tailscale-custom-domain-dns";
-          version = "0.6.2";
+          version = "0.6.3";
           src = ./.;
-          vendorHash = "sha256-dNTf27ef7INXjB9hkJ651aVzAY/3Ek4QjkTWWDMngrA=";
+          vendorHash = null;
         };
       };
   };
