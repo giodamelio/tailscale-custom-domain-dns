@@ -11,7 +11,7 @@ require (
 	github.com/rs/zerolog v1.30.0
 	github.com/spf13/viper v1.16.0
 	golang.org/x/oauth2 v0.11.0
-	tailscale.com v1.48.1
+	tailscale.com v1.48.2
 )
 
 require (
