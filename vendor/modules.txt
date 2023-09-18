@@ -552,7 +552,7 @@ nhooyr.io/websocket/internal/bpool
 nhooyr.io/websocket/internal/errd
 nhooyr.io/websocket/internal/wsjs
 nhooyr.io/websocket/internal/xsync
-# tailscale.com v1.48.1
+# tailscale.com v1.48.2
 ## explicit; go 1.21
 tailscale.com
 tailscale.com/atomicfile
